@@ -7,44 +7,54 @@ local options = { noremap = true, silent = false, buffer = nil, nowait = false }
 local keyboard_layout = {}
 if env_keyboard_layout == "qwerty" then
   keyboard_layout = {
+
     left = {
       lower = "h",
       upper = "H"
     },
+
     down = {
       lower = "j",
       upper = "J"
     },
+
     up = {
       lower = "k",
       upper = "K"
     },
+
     right = {
       lower = "l",
       upper = "L"
     }
+
   }
 
 elseif env_keyboard_layout == "colemak-qi" then
-  print("Keyboard layout is not yet supported")
   keyboard_layout = {
+
     left = {
-      lower = "h",
-      upper = "H"
+      lower = "p",
+      upper = "P"
     },
+
     down = {
-      lower = "j",
-      upper = "J"
+      lower = "n",
+      upper = "N"
     },
+
     up = {
-      lower = "k",
-      upper = "K"
+      lower = "e",
+      upper = "E"
     },
+
     right = {
-      lower = "l",
-      upper = "L"
+      lower = "i",
+      upper = "I"
     }
+
   }
+
 end
 
 if env_keyboard_layout ~= "qwerty" then
@@ -70,10 +80,6 @@ if env_keyboard_layout ~= "qwerty" then
   keymap('', 'L', keyboard_layout.right.upper,  options)
 end
 
-print("h = " .. keyboard_layout.left.lower, "H = " .. keyboard_layout.left.upper)
-print("j = " .. keyboard_layout.down.lower, "J = " .. keyboard_layout.down.upper)
-print("k = " .. keyboard_layout.up.lower, "K = " .. keyboard_layout.up.upper)
-print("l = " .. keyboard_layout.right.lower, "L = " .. keyboard_layout.right.upper)
 -- Custom mappings
 -- Modes
 --   "n" = normal_mode,
@@ -114,6 +120,7 @@ M.custom = {
     -- Move current line
     ["<A-" .. keyboard_layout.down.lower .. ">"] = {"<Esc>:m .+1<CR>==gi", "Move line down", options},
     ["<A-" .. keyboard_layout.up.lower .. ">"] = {"<Esc>:m .-2<CR>==gi", "Move line up", options},
+    ["jk"] = {"<Esc>", "Exit insert mode", options},
   },
 
   v = {
