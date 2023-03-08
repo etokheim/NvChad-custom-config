@@ -6,7 +6,8 @@ M.ui = {
   theme = "onedark",
 }
 
-require "custom.settings"
+require "custom.options"
 M.mappings = require "custom.mappings"
+M.plugins = require "custom.plugins"
 
 return M
