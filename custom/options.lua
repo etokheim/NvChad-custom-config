@@ -61,3 +61,17 @@ end
 -- vim.cmd [[set iskeyword+=-]]
 -- vim.cmd [[set formatoptions-=cro]] -- TODO: this doesn't seem to work
 -- vim.cmd [[set noexpandtab]] -- TODO: this doesn't seem to work
+
+-- Enable providers (All providers are disabled by default because "it's language specific stuff")
+-- TODO: THIS DOESN'T WORK!
+-- It's getting overridden by the default NvChad stuff... Added a temporary override in their code
+local enable_providers = {
+	"python3_provider",
+	"node_provider",
+	-- and so on
+}
+
+for _, plugin in pairs(enable_providers) do
+	vim.g["loaded_" .. plugin] = nil
+	vim.cmd("runtime " .. plugin)
+end
