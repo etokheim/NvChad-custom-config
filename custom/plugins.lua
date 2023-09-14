@@ -31,7 +31,7 @@ return {
 				-- shell
 				"shfmt",
 				"shellcheck",
-				},
+			},
 		},
 	},
 
@@ -39,6 +39,49 @@ return {
 		config = function()
 			require "plugins.configs.lspconfig"
 			require "custom.configs.lspconfig"
+		end,
+	},
+
+	-- {
+	-- 	"nvim-treesitter/nvim-treesitter",
+	-- 	opts = {
+	-- 		-- A list of parser names, or "all" (the five listed parsers should always be installed)
+	-- 		ensure_installed = { "c", "lua", "html", "css", "bash", "javascript" },
+	--
+	-- 		-- Install parsers synchronously (only applied to `ensure_installed`)
+	-- 		sync_install = false,
+	--
+	-- 		-- Automatically install missing parsers when entering buffer
+	-- 		-- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+	-- 		auto_install = true,
+	--
+	-- 		-- List of parsers to ignore installing (for "all")
+	-- 		-- ignore_install = {},
+	-- 	},
+	-- }
+
+	-- This doesn't work -> meaning that javascript isn't automatically installed when opening a js file
+	["nvim-treesitter/nvim-treesitter"] = {
+		opts = {
+			-- A list of parser names, or "all" (the five listed parsers should always be installed)
+			ensure_installed = { "c", "lua", "html", "css", "bash", "javascript" },
+
+			-- Install parsers synchronously (only applied to `ensure_installed`)
+			sync_install = false,
+
+			-- Automatically install missing parsers when entering buffer
+			-- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+			auto_install = true,
+
+			-- List of parsers to ignore installing (for "all")
+			-- ignore_install = {},
+		},
+	},
+
+  -- How do I load this into NvChads theme manager? They seem to be configured elsewhere...
+	["projekt0n/github-nvim-theme"] = {
+		config = function()
+			require('github-theme').setup({})
 		end,
 	},
 }

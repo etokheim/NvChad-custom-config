@@ -1,7 +1,7 @@
 local options = {
 	-- backup = false,													-- wheather to create a backup file
 	clipboard = 'unnamedplus',									-- Makes Neovim use the system's clipboard, so you can copy/paste from Neovim. A workaround is required for Windows
-	cmdheight = 2,															-- Set the height of the command area (where you focus when typing :) {Default: 1}
+	cmdheight = 1,															-- Set the height of the command area (where you focus when typing :) {Default: 1}
 	fileencoding = "utf-8",											-- the encoding written to a file
 	hlsearch = true,														-- highlight all matches on previous search pattern
 	ignorecase = true,													-- ignore case in search patterns
@@ -39,7 +39,7 @@ local options = {
 	list = true,																-- Display hidden characters (and the like)
 	listchars = "tab:→ ,space:·,trail:~",				-- Display whitespaces as symbols (to differentiate between tabs, spaces etc) - (If you want to symbolize end of lines as well: `eol:¬`)
 	exrc = true,																-- Auto source init.vim files within project directories
-	showmatch = true,														-- Highlights the matching parentheses for a second after it's created ({[]})
+	showmatch = false,													-- Highlights the matching parentheses for a second after it's created ({[]})
 	-- completeopt = {													-- Configuration for insert mode completion
 	--	"menuone",															-- menuone: Use the popup menu also when there is only one match. Useful when there is additional information about the match, e.g., what file it comes from.
 	--	"noselect"															-- noselect: Do not select a match in the menu, force the user to select one from the menu. Only works in combination with "menu" or "menuone".
