@@ -1,6 +1,4 @@
 -- First read our docs (completely) then check the example_config repo
-print("Hello from chadrc")
-
 local M = {}
 
 require "custom.options"
@@ -12,9 +10,9 @@ M.ui = {
   hl_add = {},
   hl_override = {},
   changed_themes = {},
-  theme_toggle = { "onedark", "one_light" },
+  theme_toggle = { "github_dark", "one_light" },
   transparency = false,
-  -- theme = "onedark", -- default theme
+  theme = "github_dark", -- default theme
 	-- theme = "everforest",
 }
 
@@ -25,6 +23,6 @@ M.options = {
   },
 }
 
-require('github-theme').setup()
+-- require('github-theme').setup()
 
 return M
