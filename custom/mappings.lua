@@ -1,5 +1,9 @@
 local M = {}
-local env_keyboard_layout = "qwerty"
+local env_keyboard_layout = os.getenv("KEYBOARD_LAYOUT")
+
+if env_keyboard_layout == nil then
+  env_keyboard_layout = "qwerty"
+end
 
 -- Default remap options (used when an options argument is not passed in)
 local options = { noremap = true, silent = false, buffer = nil, nowait = false }
