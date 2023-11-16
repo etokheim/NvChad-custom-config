@@ -1,9 +1,16 @@
 -- First read our docs (completely) then check the example_config repo
 local M = {}
 
-require "custom.options"
-M.mappings = require "custom.mappings"
-M.plugins = require "custom.plugins"
+
+if vim.g.vscode then
+  require "custom.vscode.options"
+  M.mappings = require "custom.vscode.mappings"
+  M.plugins = require "custom.vscode.plugins"
+else
+  require "custom.options"
+  M.mappings = require "custom.mappings"
+  M.plugins = require "custom.plugins"
+end
 
 M.ui = {
   -- hl = highlights
