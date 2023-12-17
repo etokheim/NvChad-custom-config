@@ -1,14 +1,15 @@
--- First read our docs (completely) then check the example_config repo
+UTILITIES = require("custom.utilities")
+JSON = require("dkjson")
+
 local M = {}
 
+M.mappings = require "custom.mappings"
 
 if vim.g.vscode then
   require "custom.vscode.options"
-  M.mappings = require "custom.vscode.mappings"
   M.plugins = require "custom.vscode.plugins"
 else
   require "custom.options"
-  M.mappings = require "custom.mappings"
   M.plugins = require "custom.plugins"
 end
 

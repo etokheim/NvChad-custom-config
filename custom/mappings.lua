@@ -1,99 +1,31 @@
-local M = {}
-local env_keyboard_layout = os.getenv("KEYBOARD_LAYOUT")
+local keyboard_layout = UTILITIES.get_keyboard_layout()
 
-if env_keyboard_layout == nil then
-  env_keyboard_layout = "qwerty"
-end
+local M = {}
 
 -- Default remap options (used when an options argument is not passed in)
 local options = { noremap = true, silent = false, buffer = nil, nowait = false }
 local options_navigation = { noremap = true, silent = false, buffer = nil, nowait = false }
 
-local keyboard_layout = {}
-if env_keyboard_layout == "qwerty" then
-  keyboard_layout = {
+local keymap = vim.api.nvim_set_keymap
+-- Swap navigation keys to the new keyboard layout
+keymap('', keyboard_layout.left.lower,  'h', options_navigation)
+keymap('', keyboard_layout.left.upper,  'H', options_navigation)
+keymap('', keyboard_layout.down.lower,  'j', options_navigation)
+keymap('', keyboard_layout.down.upper,  'J', options_navigation)
+keymap('', keyboard_layout.up.lower,    'k', options_navigation)
+keymap('', keyboard_layout.up.upper,    'K', options_navigation)
+keymap('', keyboard_layout.right.lower, 'l', options_navigation)
+keymap('', keyboard_layout.right.upper, 'L', options_navigation)
 
-    left = {
-      lower = "h",
-      upper = "H"
-    },
-
-    down = {
-      lower = "j",
-      upper = "J"
-    },
-
-    up = {
-      lower = "k",
-      upper = "K"
-    },
-
-    right = {
-      lower = "l",
-      upper = "L"
-    },
-
-    paste = {
-      lower = "p",
-      upper = "P"
-    }
-
-  }
-
-elseif env_keyboard_layout == "colemak-qi" then
-  keyboard_layout = {
-
-    left = {
-      lower = "p",
-      upper = "P"
-    },
-
-    down = {
-      lower = "n",
-      upper = "N"
-    },
-
-    up = {
-      lower = "e",
-      upper = "E"
-    },
-
-    right = {
-      lower = "i",
-      upper = "I"
-    },
-
-    paste = {
-      lower = "h",
-      upper = "H"
-    }
-
-  }
-
-end
-
-if env_keyboard_layout ~= "qwerty" then
-  local keymap = vim.api.nvim_set_keymap
-  -- Swap navigation keys to the new keyboard layout
-  keymap('', keyboard_layout.left.lower,  'h', options_navigation)
-  keymap('', keyboard_layout.left.upper,  'H', options_navigation)
-  keymap('', keyboard_layout.down.lower,  'j', options_navigation)
-  keymap('', keyboard_layout.down.upper,  'J', options_navigation)
-  keymap('', keyboard_layout.up.lower,    'k', options_navigation)
-  keymap('', keyboard_layout.up.upper,    'K', options_navigation)
-  keymap('', keyboard_layout.right.lower, 'l', options_navigation)
-  keymap('', keyboard_layout.right.upper, 'L', options_navigation)
-
-  -- Move the functions, previously on the navigation row, to the swapped keys
-  keymap('', 'h', keyboard_layout.left.lower,   options_navigation)
-  keymap('', 'H', keyboard_layout.left.upper,   options_navigation)
-  keymap('', 'j', keyboard_layout.down.lower,   options_navigation)
-  keymap('', 'J', keyboard_layout.down.upper,   options_navigation)
-  keymap('', 'k', keyboard_layout.up.lower,     options_navigation)
-  keymap('', 'K', keyboard_layout.up.upper,     options_navigation)
-  keymap('', 'l', keyboard_layout.right.lower,  options_navigation)
-  keymap('', 'L', keyboard_layout.right.upper,  options_navigation)
-end
+-- Move the functions, previously on the navigation row, to the swapped keys
+keymap('', 'h', keyboard_layout.left.lower,   options_navigation)
+keymap('', 'H', keyboard_layout.left.upper,   options_navigation)
+keymap('', 'j', keyboard_layout.down.lower,   options_navigation)
+keymap('', 'J', keyboard_layout.down.upper,   options_navigation)
+keymap('', 'k', keyboard_layout.up.lower,     options_navigation)
+keymap('', 'K', keyboard_layout.up.upper,     options_navigation)
+keymap('', 'l', keyboard_layout.right.lower,  options_navigation)
+keymap('', 'L', keyboard_layout.right.upper,  options_navigation)
 
 -- Custom mappings
 -- Modes
@@ -104,7 +36,7 @@ end
 --   "t" = term_mode,
 --   "c" = command_mode,
 
--- Disable all the default NvChad keymappings
+-- Disable all of NvChad's default keymappings
 M.disabled = {
   i = {
     -- go to  beginning and end
@@ -227,7 +159,7 @@ M.custom = {
     -- Move current line
     ["<A-" .. keyboard_layout.down.lower .. ">"] = {"<Esc>:m .+1<CR>==gi", "Move line down", options},
     ["<A-" .. keyboard_layout.up.lower .. ">"] = {"<Esc>:m .-2<CR>==gi", "Move line up", options},
-    ["jk"] = {"<Esc>", "Exit insert mode", options},
+    -- ["jk"] = {"<Esc>", "Exit insert mode", options},
 
     -- go to  beginning and end
     ["<C-b>"] = { "<ESC>^i", "Beginning of line" },
@@ -252,41 +184,47 @@ M.custom = {
 
 }
 
-M.nvimtree = {
-  plugin = true,
+-- Use specific mappings when using vscode and not
+if vim.g.vscode then
+  local vscode_mappings = require "custom.vscode.mappings"
+  M = UTILITIES.deepMergeTables(M, vscode_mappings)
+else
+  M.nvimtree = {
+    plugin = true,
 
-  n = {
-    -- toggle
-    ["<C-n>"] = { "<cmd> NvimTreeToggle <CR>", "Toggle nvimtree" },
+    n = {
+      -- toggle
+      ["<C-n>"] = { "<cmd> NvimTreeToggle <CR>", "Toggle nvimtree" },
 
-    -- focus
-    ["<leader>e"] = { "<cmd> NvimTreeFocus <CR>", "Focus nvimtree" },
+      -- focus
+      ["<leader>e"] = { "<cmd> NvimTreeFocus <CR>", "Focus nvimtree" },
 
-    ["e"] = { "k", "Move up" },
-  },
-}
+      ["e"] = { "k", "Move up" },
+    },
+  }
 
-CUSTOM = {}
-function CUSTOM.nvimtree_options(bufnr)
-  local api = require "nvim-tree.api"
+  CUSTOM = {}
+  function CUSTOM.nvimtree_options(bufnr)
+    local api = require "nvim-tree.api"
 
-  local function opts(desc)
-    return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+    local function opts(desc)
+      return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+    end
+
+    -- Mappings defined here differ from the mappings in M.nvimtree as these map keys
+    -- while in the nvim tree buffer. The other mappings map keys in normal buffers
+
+    -- default mappings
+    api.config.mappings.default_on_attach(bufnr)
+
+    -- custom mappings
+    vim.keymap.set('n', '<C-t>', api.tree.change_root_to_parent,     opts('Up'))
+    vim.keymap.set('n', '?',     api.tree.toggle_help,               opts('Help'))
+
+    -- Add custom movement keys to vimtree as well
+    vim.keymap.set('n', keyboard_layout.down.lower,     "j",         opts('Move down'))
+    vim.keymap.set('n', keyboard_layout.up.lower,       "k",         opts('Move up'))
   end
-
-  -- Mappings defined here differ from the mappings in M.nvimtree as these map keys
-  -- while in the nvim tree buffer. The other mappings map keys in normal buffers
-
-  -- default mappings
-  api.config.mappings.default_on_attach(bufnr)
-
-  -- custom mappings
-  vim.keymap.set('n', '<C-t>', api.tree.change_root_to_parent,        opts('Up'))
-  vim.keymap.set('n', '?',     api.tree.toggle_help,                  opts('Help'))
-
-  -- Add custom movement keys to vimtree as well
-  vim.keymap.set('n', keyboard_layout.down.lower,     "j",                                   opts('Move down'))
-  vim.keymap.set('n', keyboard_layout.up.lower,       "k",                                   opts('Move up'))
 end
 
 
