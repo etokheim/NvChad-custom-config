@@ -1,5 +1,4 @@
 UTILITIES = require("custom.utilities")
-JSON = require("dkjson")
 
 local M = {}
 
